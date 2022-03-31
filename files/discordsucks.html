@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>graphic design is my passion</title>
+        <link rel="stylesheet" href="style.css">
+        <script>
+            function generateRandomId(length) {
+                var result = '';
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                const charactersLength = characters.length;
+
+                for (var i = 0; i < length; i++)
+                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+
+                return result;
+            }
+
+            function generateNsfw() {
+                const link = document.getElementById("nsfw-link").value;
+                const resultElement = document.getElementById("nsfw-result");
+                const randomID = generateRandomId(32);
+                const resultLink = "http://" + window.location.host + "/nsfw-bypass?link=" + encodeURIComponent(link) + "&rid=" + randomID;
+
+                resultElement.value = resultLink;
+                resultElement.focus();
+                resultElement.select();
+                return false;
+            }
+
+            function generateFakeThumbnail() {
+                const thumbnailLink = document.getElementById("fake-thumbnail-link").value;
+                const actualLink = document.getElementById("fake-thumbnail-actual").value;
+                const resultElement = document.getElementById("fake-thumbnail-result");
+                const resultLink = "http://"
+                    + window.location.host
+                    + "/fake-thumbnail?thumb=" + encodeURIComponent(thumbnailLink)
+                    + "&actual=" + encodeURIComponent(actualLink);
+
+                resultElement.value = resultLink;
+                resultElement.focus();
+                resultElement.select();
+                return false;
+            }
+        </script>
+    </head>
+    <body>
+        <div class="pane">
+            <div>NSFW check bypass</div>
+            <form onsubmit="return generateNsfw()">
+                <div>
+                    <span>Link:</span>
+                    <input id="nsfw-link" />
+                </div>
+                <div>
+                    <span>Result:</span>
+                    <input id="nsfw-result" readonly />
+                </div>
+                <button id="nsfw-generate" onclick="generateNsfw()">Generate</button>
+            </form>
+        </div>
+        <div class="pane">
+            <div>Fake thumbnail gen</div>
+            <form onsubmit="return generateFakeThumbnail()">
+                <div>
+                    <span>Link to thumbnail:</span>
+                    <input id="fake-thumbnail-link" />
+                </div>
+                <div>
+                    <span>Link to actual file:</span>
+                    <input id="fake-thumbnail-actual" />
+                </div>
+                <div>
+                    <span>Result:</span>
+                    <input id="fake-thumbnail-result" readonly />
+                </div>
+                <button id="fake-thumbnail-generate" onclick="generateFakeThumbnail()">Generate</button>
+            </form>
+        </div>
+        <div class="footer">
+            <span>copyrite © 2022-$currentyear vapid</span>
+        </div>
+    </body>
+</html>
