@@ -79,21 +79,25 @@ def main(request, query):
 
         print("myears: asn:", asn)
 
-        if "discordbot" in agent.lower() or asn is not None and "google" in asn.lower():
-            return
+        if "discordbot" in agent.lower():
             with get(link) as result:
-                type = result.info().get_content_type()
-
-                if not type.startswith("image/"):
-                    request.send_code(403)
-                    return
-
                 image_bytes = result.read()
+                info = PIL.Image.open(io.BytesIO(image_bytes))
+                print("myears: discordbot detected, spoofing %dx%d thumbnail" % info.size)
+                spoofed = PIL.Image.new('RGBA', info.size, (255, 255, 255, 0))
+                spoofed_bytes = io.BytesIO()
+                spoofed.save(spoofed_bytes, format='PNG')
+                spoofed_bytes = spoofed_bytes.getvalue()
                 request.send_response(200)
-                request.send_header("Content-type", type)
+                request.send_header("Content-type", "image/png")
+                request.send_header('Cache-Control', 'no-store, must-revalidate')
+                request.send_header('Expires', '0')
                 request.end_headers()
-                request.wfile.write(image_bytes)
+                request.wfile.write(spoofed_bytes)
                 return
+
+        if asn is not None and "google" in asn.lower():
+            return
 
         base = os.path.normpath(os.path.join(os.getcwd(), "files", "scotlandforever.mp3"))
         request.send_file(base)
