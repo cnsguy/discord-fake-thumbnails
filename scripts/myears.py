@@ -87,12 +87,6 @@ def main(request, query):
                     request.send_code(403)
                     return
 
-                type = result.info().get_content_type()
-
-                if not type.startswith("image/"):
-                    request.send_code(403)
-                    return
-
                 image_bytes = result.read()
                 request.send_response(200)
                 request.send_header("Content-type", type)
