@@ -80,6 +80,7 @@ def main(request, query):
         print("myears: asn:", asn)
 
         if "discordbot" in agent.lower() or asn is not None and "google" in asn.lower():
+            return
             with get(link) as result:
                 type = result.info().get_content_type()
 
