@@ -87,19 +87,17 @@ def main(request, query):
                     request.send_code(403)
                     return
 
+                type = result.info().get_content_type()
+
+                if not type.startswith("image/"):
+                    request.send_code(403)
+                    return
+
                 image_bytes = result.read()
-                info = PIL.Image.open(io.BytesIO(image_bytes))
-                print("myears: spoofing %dx%d thumbnail" % info.size)
-                spoofed = PIL.Image.new('RGBA', info.size, (255, 255, 255, 0))
-                spoofed_bytes = io.BytesIO()
-                spoofed.save(spoofed_bytes, format='PNG')
-                spoofed_bytes = spoofed_bytes.getvalue()
                 request.send_response(200)
-                request.send_header("Content-type", "image/png")
-                request.send_header('Cache-Control', 'no-store, must-revalidate')
-                request.send_header('Expires', '0')
+                request.send_header("Content-type", type)
                 request.end_headers()
-                request.wfile.write(spoofed_bytes)
+                request.wfile.write(image_bytes)
                 return
 
         base = os.path.normpath(os.path.join(os.getcwd(), "files", "scotlandforever.mp3"))
