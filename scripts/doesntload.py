@@ -99,7 +99,7 @@ def main(request, query):
         if asn is not None and "google" in asn.lower():
             return
 
-        base = os.path.normpath(os.path.join(os.getcwd(), "files", "scotlandforever.mp3"))
+        base = os.path.normpath(os.path.join(os.getcwd(), "files", "gackimucki.mp3"))
         request.send_file(base)
 
     except Exception:
