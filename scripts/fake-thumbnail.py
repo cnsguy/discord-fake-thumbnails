@@ -6,10 +6,12 @@ import os
 import csv
 import ipaddress
 
+
 def get(url):
-    user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:98.0) Gecko/20100101 Firefox/98.0";
+    user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:98.0) Gecko/20100101 Firefox/98.0"
     req = urllib.request.Request(url, headers={'User-Agent': user_agent})
     return urllib.request.urlopen(req)
+
 
 def get_asn(ip):
     if not os.path.exists("ip-asn.csv"):
@@ -29,8 +31,9 @@ def get_asn(ip):
                     return batch[2]
 
             i += 1
-        
+
     return None
+
 
 def should_be_filtered(link):
     bad = ["localhost", "127.0.0.1"]
@@ -38,7 +41,7 @@ def should_be_filtered(link):
 
     if parsed.path in bad:
         return True
-    
+
     if parsed.path.startswith(socket.gethostname()):
         return True
 
@@ -46,6 +49,7 @@ def should_be_filtered(link):
         return True
 
     return False
+
 
 def main(request, query):
     try:

@@ -7,6 +7,7 @@ import glob
 import urllib.parse
 import sys
 
+
 def choose_file(path):
     candidates = []
 
@@ -15,7 +16,7 @@ def choose_file(path):
 
         if not os.path.isfile(fname):
             continue
-    
+
         candidates.append(fname)
 
     if len(candidates) == 0:
@@ -23,12 +24,14 @@ def choose_file(path):
 
     return random.choice(candidates)
 
+
 def get_scripts():
     path = os.path.join("scripts", "*.py")
     files = glob.glob(path)
     files = [file.split(os.path.sep)[1] for file in files]
     files = [file.split(".")[0] for file in files]
     return files
+
 
 class HookedHTTPHandler(http.server.BaseHTTPRequestHandler):
     def send_code(self, code):
@@ -122,6 +125,7 @@ class HookedHTTPHandler(http.server.BaseHTTPRequestHandler):
         else:
             self.send_404()
 
+
 def main():
     if len(sys.argv) < 3:
         sys.stderr.write("Usage: %s <bindip> <port>\n" % sys.argv[0])
@@ -135,5 +139,6 @@ def main():
         server.serve_forever()
     except KeyboardInterrupt:
         server.server_close()
+
 
 main()
